@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
+            https://cordova.apache.org/docs/en/latest/
+        Some notes:
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="css/index.css">
+    <!-- login form -->
+    <title>Login i-Notes</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="forms">
+            <div class="form login">
+                <span class="title">Login to iNotes</span>
+
+                <div class="input-field">
+                    <input type="text" id="email" placeholder="Enter your email" required>
+                    <i class="uil uil-envelope icon"></i>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="password" class="password" placeholder="Enter your password" required>
+                    <i class="uil uil-lock icon"></i>
+                    <i class="uil uil-eye-slash showHidePw"></i>
+                </div>
+
+                <div class="checkbox-text">
+                    <div class="checkbox-content">
+                        <input type="checkbox" id="logCheck">
+                        <label for="logCheck" class="text">Remember me</label>
+                    </div>
+                </div>
+
+                <div id="button_container">
+                    <button onclick="login()">Login</button>
+                </div>
+
+                <div class="login-signup">
+                    <span class="text">Not a member?
+                        <a href="signup.html" class="text signup-link">Signup Now</a>
+                    </span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- The core Firebase JS SDK is always required and must be listed first -->
+     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+
+     <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+ 
+     <!-- Our script must be loaded after firebase references -->
+     <script src="js/index.js"></script> 
+     <script src="cordova.js"></script>
+
+</body>
+
+</html>

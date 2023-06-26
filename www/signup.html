@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="css/index.css">
+    <!-- login form -->
+    <title>Login i-Notes</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="forms">
+            <div class="form login">
+                <span class="title">Sign Up to iNotes</span>
+
+                <div class="input-field">
+                    <input type="text" id="full_name" placeholder="Enter your name" required>
+                    <i class="uil uil-user"></i>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="email" placeholder="Enter your email" required>
+                    <i class="uil uil-envelope icon"></i>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="password" class="password" placeholder="Enter your password" required>
+                    <i class="uil uil-lock icon"></i>
+                    <i class="uil uil-eye-slash showHidePw"></i>
+                </div>
+
+                <div id="button_container">
+                    <button onclick="register()">Register</button>
+                </div>
+
+                <div class="login-signup">
+                    <span class="text">Already a member?
+                        <a href="login.html" class="text login-link">Login Now</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+    <!-- Our script must be loaded after firebase references -->
+    <script src="js/index.js"></script>
+
+</body>
+
+</html>

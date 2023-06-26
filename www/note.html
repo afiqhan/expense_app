@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-success">
+        <a class="navbar-brand" href="#">
+            <p style="font-size: 30px;">
+                i-Notes
+            </p>
+        </a>
+    </nav>
+
+    <div class="container my-3">
+        <h1>Write your Notes here</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Add a Note
+                </h5>
+                <div class="form-group">
+                    <input class="form-control" id="title" placeholder="Enter Title">
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="note" placeholder="Enter Note" rows="3"></textarea>
+                </div>
+                <button class="btn btn-primary" id="insert" style="background-color:green">Add Note</button>
+            </div>
+        </div>
+
+        <h1>My Notes</h1>
+        <hr>
+
+        <div id="notes" class="card-columns"></div>
+
+        <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+            import { getDatabase, ref, get, set, child, update, remove } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+             // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAVpPlwD91MsReXwJDzJJkINGLSh7pPlQc",
+    authDomain: "login-i-notes-3b380.firebaseapp.com",
+    databaseURL: "https://login-i-notes-3b380-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "login-i-notes-3b380",
+    storageBucket: "login-i-notes-3b380.appspot.com",
+    messagingSenderId: "652630258215",
+    appId: "1:652630258215:web:1e337bb2a044a24813d402"
+  };
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+
+            const db = getDatabase();
+
+            function showAllData() {
+                const dbref = ref(db, "Notes");
+
+                get(dbref)
+                    .then((snapshot) => {
+                        let html = "";
+
+                        if (snapshot.exists()) {
+                            snapshot.forEach((childSnapshot, index) => {
+                                const data = childSnapshot.val();
+
+                                html += `<div class="noteCard my-2 mx-2 card" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            Title: ${data.Title}
+                                        </h5>
+                                        <p class="card-text">
+                                            Note: ${data.Note}
+                                        </p>
+                                        <button class="btn btn-primary update-btn" data-id="${childSnapshot.key}">Update Note</button>
+                                        <button class="btn btn-primary remove-btn" data-id="${childSnapshot.key}">Delete Note</button>
+
+                                    </div>
+                                </div>`;
+                            });
+                        } else {
+                            html = "No data found";
+                        }
+
+                        const notesElm = document.getElementById("notes");
+                        notesElm.innerHTML = html;
+
+                        // Add event listeners to update and delete buttons
+                        const updateBtns = document.querySelectorAll(".update-btn");
+                        const removeBtns = document.querySelectorAll(".remove-btn");
+
+                        updateBtns.forEach(btn => btn.addEventListener('click', () => UpdateData(btn.dataset.id)));
+                        removeBtns.forEach(btn => btn.addEventListener('click', () => RemoveData(btn.dataset.id)));
+                    })
+                    .catch((error) => {
+                        alert(error);
+                    });
+            }
+
+            function InsertData() {
+                const title = document.querySelector("#title");
+                const note = document.querySelector("#note");
+
+                set(ref(db, "Notes/" + title.value), {
+                    Title: title.value,
+                    Note: note.value,
+                })
+                    .then(() => {
+                        alert("Data added successfully");
+                        showAllData();
+                    })
+                    .catch((error) => {
+                        alert(error);
+                    });
+            }
+
+            function UpdateData(id) {
+                const title = prompt("Edit title");
+                const note = prompt("Edit note:");
+
+                if (title !== null && note !== null) {
+                    update(ref(db, "Notes/" + id), {
+                        Title: title,
+                        Note: note
+                    })
+                        .then(() => {
+                            alert("Data updated successfully");
+                            showAllData();
+                        })
+                        .catch((error) => {
+                            alert(error);
+                        });
+                }
+            }
+
+            function RemoveData(id) {
+                if (confirm("Are you sure you want to delete this note?")) {
+                    remove(ref(db, "Notes/" + id))
+                        .then(() => {
+                            alert("Data deleted successfully");
+                            showAllData();
+                        })
+                        .catch((error) => {
+                            alert(error);
+                        });
+                }
+            }
+
+            const insertBtn = document.querySelector("#insert");
+            insertBtn.addEventListener('click', InsertData);
+
+            showAllData();
+        </script>
+    </div>
+</body>
+
+</html>
